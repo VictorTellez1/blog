@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from .models import Post
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.urls import reverse_lazy
+
+
 # Create your views here.
 
-class BlogListView(ListView): #Regresa una lista del objeto
+class BlogListView(ListView):  # Regresa una lista del objeto
     model = Post
     template_name = 'home.html'
     context_object_name = 'all_posts_blog'
@@ -12,3 +16,22 @@ class BlogListView(ListView): #Regresa una lista del objeto
 class BlogDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
+
+
+class BlogCreateView(CreateView):
+    model = Post
+    template_name = 'post_new.html'
+    fields = ['title', 'author', 'body']  # Estos son los campos relacionados con el modelo
+    # que queremos exponer al formulario
+
+
+class BlogUpdateView(UpdateView):
+    model = Post
+    template_name = 'post_edit.html'
+    fields = ['title', 'body']
+
+
+class BlogDeleteView(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('home') #El reverse lazy lo que hace es esperar hasta que se borre el elemento para redireccionar
